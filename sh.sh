@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
 echo
-echo "=== azadrah.org ==="
-echo "=== https://github.com/azadrahorg ==="
+echo "=== ISAAC MARES ==="
+echo "=== SERVER MIKROTIK SATURNO VPN ==="
 echo "=== MikroTik 7 Installer ==="
 echo
 sleep 3
@@ -24,7 +24,7 @@ echo b > /proc/sysrq-trigger
 
 # Configuración de la IP en RouterOS tras el reboot
 ssh admin@localhost <<EOF
-/ip address add address=$ADDRESS/24 interface=ether1 
+/ip address add address=$ADDRESS interface=ether1 
 /ip route add gateway=$GATEWAY
 /ip dns set servers=8.8.8.8,8.8.4.4
 EOF
