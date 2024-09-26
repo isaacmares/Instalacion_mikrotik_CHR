@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
 echo
-echo "=== ISAAC MARES ==="
-echo "=== SERVER MIKROTIK SATURNO VPN ==="
+echo "=== azadrah.org ==="
+echo "=== https://github.com/azadrahorg ==="
 echo "=== MikroTik 7 Installer ==="
 echo
 sleep 3
@@ -22,9 +22,17 @@ echo "Ok, reboot" && \
 echo 1 > /proc/sys/kernel/sysrq && \
 echo b > /proc/sysrq-trigger
 
+# Esperar un tiempo para que el sistema reinicie
+sleep 30
+
 # Configuración de la IP en RouterOS tras el reboot
-ssh admin@localhost <<EOF
+# Intenta conectarte hasta que la conexión esté disponible
+while ! ssh admin@localhost -o StrictHostKeyChecking=no -o ConnectTimeout=5 <<EOF
 /ip address add address=$ADDRESS interface=ether1 
 /ip route add gateway=$GATEWAY
 /ip dns set servers=8.8.8.8,8.8.4.4
 EOF
+do
+    echo "Esperando a que MikroTik esté disponible..."
+    sleep 5
+done
