@@ -22,16 +22,18 @@ sleep 5 && \
 dd if=chr.img of=/dev/$STORAGE bs=4M oflag=sync && \
 echo "Ok, configurando script de inicialización..." && \
 
-# Crear un script de inicialización
-cat <<EOF > /mnt/init.rsc
+# Crear un script de inicialización en /tmp
+cat <<EOF > /tmp/init.rsc
 /ip address add address=$ADDRESS/24 interface=ether1
 /ip route add gateway=$GATEWAY
 /ip dns set servers=8.8.8.8,8.8.4.4
 EOF
 
 # Añadir el script al scheduler para que se ejecute al inicio
-echo "/system script add name='Configurar_IP' source='/file exec init.rsc'" >> /mnt/init.rsc
-echo "/system scheduler add name='Ejecutar_Configurar_IP' on-event='Configurar_IP' start-time=startup;" >> /mnt/init.rsc
+cat <<EOF >> /tmp/init.rsc
+/system script add name="Configurar_IP" source="/file exec init.rsc"
+/system scheduler add name="Ejecutar_Configurar_IP" on-event="Configurar_IP" start-time=startup
+EOF
 
 # Reiniciar el router
 echo "Configuraciones aplicadas, ahora reiniciando..."
